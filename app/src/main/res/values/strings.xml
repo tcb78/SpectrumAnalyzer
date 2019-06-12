@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SpectrumAnalyzer</string>
+    <string name="playing">PLAYING</string>
+    <string name="stopped">STOPPED</string>
+</resources>
