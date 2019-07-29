@@ -20,6 +20,7 @@ import android.graphics.DashPathEffect;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements OnCheckedChangeLi
 
         if(isChecked) {
 
+            final Handler handler = new Handler();
+
             //実験用デバイスではminBufSize = 3584
             final int MIN_BUFFER_SIZE = AudioRecord.getMinBufferSize(
                     SAMPLING_RATE,
@@ -98,9 +101,15 @@ public class MainActivity extends AppCompatActivity implements OnCheckedChangeLi
                         //FFTクラスの作成と値の引き出し
                         double[] fftData = fastFourierTransform(shortData);
                         //パワースペクトル・デシベルの計算
-                        double[] decibelFrequencySpectrum = computePowerSpectrum(fftData);
+                        final double[] decibelFrequencySpectrum = computePowerSpectrum(fftData);
                         //TODO:ここでArrayListに代入
-                        setData(decibelFrequencySpectrum);
+                        // Handlerを使用してメイン(UI)スレッドに処理を依頼する
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                setData(decibelFrequencySpectrum);
+                            }
+                        });
 
 
                     }
@@ -259,7 +268,8 @@ public class MainActivity extends AppCompatActivity implements OnCheckedChangeLi
             set1 = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
             set1.setValues(values);
             lineChart.getData().notifyDataChanged();
-            lineChart.notifyDataSetChanged();
+            lineChart.notifyDataSetChanged(); // let the chart know it's data changed
+            lineChart.invalidate(); // refresh
         } else {
             // create a dataset and give it a type
             set1 = new LineDataSet(values, "Spectrum");
