@@ -3,16 +3,13 @@ package com.example.taichiabe.spectrumanalyzer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import android.graphics.Color;
@@ -23,7 +20,6 @@ import android.media.MediaRecorder;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Switch;
@@ -102,8 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnCheckedChangeLi
                         double[] fftData = fastFourierTransform(shortData);
                         //パワースペクトル・デシベルの計算
                         final double[] decibelFrequencySpectrum = computePowerSpectrum(fftData);
-                        //TODO:ここでArrayListに代入
-                        // Handlerを使用してメイン(UI)スレッドに処理を依頼する
+                        //Handlerを使用してメイン(UI)スレッドに処理を依頼する
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
