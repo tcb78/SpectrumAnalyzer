@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity implements OnCheckedChangeLi
     public static final int FFT_SIZE = 4096;
     //デシベルベースラインの設定
     public static final double DB_BASELINE = Math.pow(2, 15) * FFT_SIZE * Math.sqrt(2);
-    //分解能の計算
-    public static final double RESOLUTION = SAMPLING_RATE / (double) FFT_SIZE;
     private AudioRecord audioRec = null;
     boolean isRecording = false;
     Thread fft;
